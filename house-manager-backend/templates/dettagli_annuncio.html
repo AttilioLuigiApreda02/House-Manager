@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold text-primary" id="dett-titolo">Caricamento titolo...</h1>
+        <p class="text-muted mb-0">
+            Pubblicato da: <span id="dett-venditore" class="fw-bold text-dark">...</span>
+            il <span id="dett-data">...</span>
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7 mb-4">
+
+            <div class="position-relative rounded overflow-hidden shadow-sm mb-3" style="height: 400px; background-color: #f0f0f0;">
+                <div class="ribbon-wrapper">
+                    <div class="ribbon" id="dett-stato">ATTIVO</div>
+                </div>
+                <img id="dett-main-img" src="" class="w-100 h-100 object-fit-cover" alt="Foto principale">
+            </div>
+
+            <div class="row g-2" id="dett-gallery">
+            </div>
+        </div>
+
+        <div class="col-lg-5 ps-lg-4">
+
+            <div class="mb-4">
+                <h3 class="fw-bold text-primary">Descrizione</h3>
+                <p id="dett-descrizione" class="text-muted" style="white-space: pre-line;">...</p>
+            </div>
+
+            <hr class="text-secondary my-4">
+
+            <div class="mb-4">
+                <h3 class="fw-bold text-primary mb-3">Caratteristiche</h3>
+                <h2 class="fw-bold text-secondary mb-4">Prezzo: <span id="dett-prezzo">...</span></h2>
+
+                <div id="lista-caratteristiche" class="row g-3">
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 mt-5 flex-column flex-md-row">
+                <button class="btn btn-primary btn-lg flex-grow-1 py-3 fw-bold shadow-sm" id="btn-richiedi-appuntamento">
+                    Richiedi<br>appuntamento
+                </button>
+                <button class="btn btn-secondary btn-lg flex-grow-1 py-3 fw-bold shadow-sm" onclick="apriModaleOfferta()">
+                    Invia<br>un'offerta
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        caricaDettaglio();
+    });
+</script>
+
+<div class="modal fade" id="modalOfferta" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">Fai un'Offerta</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-light border d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small fw-bold">PREZZO RICHIESTO:</span>
+                    <span id="modal-prezzo-display" class="fs-5 fw-bold text-primary">--- €</span>
+                </div>
+
+                <form onsubmit="event.preventDefault(); inviaOfferta();">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">La tua offerta (€)</label>
+                        <input type="number" id="off-importo" class="form-control" placeholder="Inserisci cifra" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Note (Opzionale)</label>
+                        <textarea id="off-msg" class="form-control" rows="2" placeholder="Messaggio per il proprietario..."></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary fw-bold" onclick="inviaOfferta()">Invia Offerta</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modaleAppuntamenti" tabindex="-1" aria-labelledby="modaleAppuntamentiLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="modaleAppuntamentiLabel">Richiedi un Appuntamento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <h6 class="mb-3">1. Seleziona un agente in zona:</h6>
+        <div id="lista-agenti" class="d-flex overflow-x-auto gap-3 py-2 mb-4" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+        </div>
+
+        <h6 class="mb-3">2. Scegli data e ora:</h6>
+        <input type="datetime-local" id="dataAppuntamento" class="form-control mb-3">
+
+        <div id="appuntamento-error" class="alert alert-danger d-none"></div>
+        <div id="appuntamento-success" class="alert alert-success d-none"></div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+        <button type="button" class="btn btn-primary" onclick="inviaRichiestaAppuntamento()">Invia Richiesta</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

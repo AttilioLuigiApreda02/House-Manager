@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center fw-bold text-primary mb-4">Registrazione</h2>
+
+                    <form id="form-registrazione">
+
+                        <div class="bg-light p-4 rounded mb-4 border">
+                            <label class="form-label fw-bold mb-2">Per iniziare, chi sei?</label>
+                            <select class="form-select form-select-lg mb-3" id="reg-ruolo" onchange="gestisciUI()">
+                                <option value="" selected disabled>-- Seleziona il tuo ruolo --</option>
+                                <option value="Acquirente">Privato (Cerco/Vendo casa)</option>
+                                <option value="Professionista">Professionista del settore</option>
+                            </select>
+
+                            <div id="div-tipo-pro" class="d-none mt-3 p-3 border bg-white rounded">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Qual è la tua professione?</label>
+                                        <select class="form-select" id="reg-tipo-pro" onchange="gestisciUI()">
+                                            <option value="Agente Immobiliare">Agente Immobiliare</option>
+                                            <option value="Notaio">Notaio</option>
+                                            <option value="Architetto">Architetto</option>
+                                            <option value="Arredatore">Arredatore</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold">Città operativa (Zona di competenza)</label>
+                                        <input type="text" class="form-control" id="reg-citta-operativa" placeholder="Es. Napoli">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dati-essenziali" class="d-none">
+                            <h5 class="text-muted border-bottom pb-2 mb-3">Dati di Contatto</h5>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nome</label>
+                                    <input type="text" class="form-control" id="reg-nome" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Cognome</label>
+                                    <input type="text" class="form-control" id="reg-cognome" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="reg-email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Telefono</label>
+                                    <input type="tel" class="form-control" id="reg-telefono">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dati-completi" class="d-none">
+
+                            <h5 class="text-muted border-bottom pb-2 mb-3 mt-4">Dati Anagrafici e Indirizzo</h5>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Data di Nascita</label>
+                                    <input type="date" class="form-control" id="reg-data">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Codice Fiscale</label>
+                                    <input type="text" class="form-control" id="reg-cf" style="text-transform: uppercase;">
+                                </div>
+                                <div class="col-md-9">
+                                    <label class="form-label">Via / Piazza</label>
+                                    <input type="text" class="form-control" id="reg-via">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Civico</label>
+                                    <input type="number" class="form-control" id="reg-civico">
+                                </div>
+                                <div class="col-md-9">
+                                    <label class="form-label">Città</label>
+                                    <input type="text" class="form-control" id="reg-citta">
+                                </div>
+                            </div>
+
+                            <div id="extra-pro" class="d-none row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Partita IVA</label>
+                                    <input type="text" class="form-control" id="reg-piva">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Albo / Ordine</label>
+                                    <input type="text" class="form-control" id="reg-albo">
+                                </div>
+                            </div>
+
+                            <div class="mb-4 mt-4 bg-light p-3 rounded">
+                                <label class="form-label fw-bold">Scegli la tua Password</label>
+                                <input type="password" class="form-control" id="reg-password" placeholder="Minimo 6 caratteri">
+                            </div>
+                        </div>
+
+                        <div id="area-bottoni" class="d-none d-grid mt-4">
+                            <button type="submit" id="btn-agente" class="d-none btn btn-success btn-lg shadow-sm">
+                                <i class="fas fa-envelope me-2"></i> Richiedi Credenziali via Email
+                            </button>
+
+                            <button type="submit" id="btn-standard" class="d-none btn btn-primary btn-lg shadow-sm">
+                                Conferma e Registrati
+                            </button>
+                        </div>
+
+                        <div id="msg-info-agente" class="d-none alert alert-info mt-3 text-center">
+                            <small>Come Agente Immobiliare, il tuo account verrà creato automaticamente.<br>
+                                Riceverai una password temporanea all'indirizzo email inserito sopra.</small>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function gestisciUI() {
+        const ruolo = document.getElementById('reg-ruolo').value;
+        const divTipoPro = document.getElementById('div-tipo-pro');
+        const tipoPro = document.getElementById('reg-tipo-pro').value;
+
+        const divEssenziali = document.getElementById('dati-essenziali');
+        const divCompleti = document.getElementById('dati-completi');
+        const divExtraPro = document.getElementById('extra-pro');
+        const areaBottoni = document.getElementById('area-bottoni');
+
+        const btnAgente = document.getElementById('btn-agente');
+        const btnStandard = document.getElementById('btn-standard');
+        const msgAgente = document.getElementById('msg-info-agente');
+
+        const inputPass = document.getElementById('reg-password');
+
+        if (!ruolo) {
+            divEssenziali.classList.add('d-none');
+            return;
+        }
+
+        divEssenziali.classList.remove('d-none');
+        areaBottoni.classList.remove('d-none');
+
+        if (ruolo === 'Professionista') {
+            divTipoPro.classList.remove('d-none');
+
+            if (tipoPro === 'Agente Immobiliare') {
+                divCompleti.classList.add('d-none');     
+                btnAgente.classList.remove('d-none');    
+                btnStandard.classList.add('d-none');     
+                msgAgente.classList.remove('d-none');    
+                inputPass.required = false;              
+            } else {
+                divCompleti.classList.remove('d-none');
+                divExtraPro.classList.remove('d-none'); 
+                btnAgente.classList.add('d-none');
+                btnStandard.classList.remove('d-none');
+                msgAgente.classList.add('d-none');
+                inputPass.required = true;
+            }
+        } else {
+            divTipoPro.classList.add('d-none');         
+            divCompleti.classList.remove('d-none');      
+            divExtraPro.classList.add('d-none');         
+            btnAgente.classList.add('d-none');
+            btnStandard.classList.remove('d-none');
+            msgAgente.classList.add('d-none');
+            inputPass.required = true;
+        }
+    }
+</script>
+{% endblock %}

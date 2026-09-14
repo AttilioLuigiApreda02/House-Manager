@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- SEZIONE DATI UTENTE -->
+    <div class="row mb-5">
+        
+        <!-- Colonna Avatar -->
+        <div class="col-12 col-md-auto text-center mb-3 mb-md-0">
+            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 110px; height: 110px; font-size: 3.5rem;">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+
+        <!-- Colonna Dati -->
+        <div class="col">
+            <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
+                <h2 class="fw-bold text-primary mb-0 me-3">I miei dati</h2>
+                <!-- Aumentato fs-6 per renderlo più leggibile -->
+                <span id="profile-ruolo-badge" class="badge bg-secondary text-uppercase fs-6">...</span>
+            </div>
+
+            <!-- Aggiunta shadow-sm e p-4 per un look più moderno -->
+            <div class="card border-0 bg-light p-4 rounded shadow-sm">
+                <div class="row g-4">
+                    <!-- Prima riga: Dati principali -->
+                    <div class="col-md-4 text-center text-md-start">
+                        <small class="text-muted text-uppercase fw-bold">Nome completo</small>
+                        <div class="fs-5 fw-bold text-dark" id="profile-nome-completo">---</div>
+                    </div>
+
+                    <div class="col-md-6  text-center text-md-start">
+                        <small class="text-muted text-uppercase fw-bold">Email</small>
+                        <div id="profile-email" class="fs-5 text-dark">---</div>
+                    </div>
+
+                    <!-- Seconda riga: Dati sensibili e geografici -->
+                    <div class="col-md-4 text-center text-md-start" id="box-nascita">
+                        <small class="text-muted text-uppercase fw-bold">Data di Nascita</small>
+                        <div id="profile-nascita" class="fs-5 text-dark">---</div>
+                    </div>
+
+                    <div class="col-md-4 text-center text-md-start" id="box-indirizzo">
+                        <small class="text-muted text-uppercase fw-bold">Indirizzo</small>
+                        <div class="fs-5 text-dark">
+                            <span id="profile-indirizzo">---</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 text-center text-md-start">
+                        <small class="text-muted text-uppercase fw-bold" id="label-citta">Città</small>
+                        <div class="fs-5 text-dark">
+                            <i id="icona-citta" class="fas fa-map-marker-alt text-danger me-1"></i>
+                            <span id="profile-citta">---</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard-privato">
+
+        <div class="mb-5">
+            <h4 class="fw-bold text-primary mb-3">Le mie offerte inviate</h4>
+            <div id="container-offerte-inviate" class="row g-3 flex-nowrap overflow-auto pb-2">
+                <p class="text-muted">Nessuna offerta inviata.</p>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h4 class="fw-bold text-primary mb-3">I miei annunci pubblicati</h4>
+            <div id="container-miei-annunci" class="row g-3 flex-nowrap overflow-auto pb-2">
+                <p class="text-muted">Nessun annuncio pubblicato.</p>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h4 class="fw-bold text-primary mb-3">Le mie offerte ricevute</h4>
+            <div id="container-offerte-ricevute" class="row g-3 flex-nowrap overflow-auto pb-2">
+                <p class="text-muted">Nessuna offerta ricevuta.</p>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <button class="btn btn-primary btn-lg fw-bold px-5" data-bs-toggle="modal" data-bs-target="#modaleConsulenza" id="btn-richiedi-consulenza">
+                Richiedi consulenza
+            </button>
+        </div>
+    </div>
+
+
+    <div id="sezione-appuntamenti-agente" class="d-none">
+            <h5 class="fw-bold text-primary mb-3 mt-4">Richieste di appuntamenti ricevuti</h5>
+            <div id="lista-richieste-ricevute" class="d-flex overflow-x-auto pb-3 mb-4" style="white-space: nowrap;">
+                <p class="text-muted">Caricamento richieste...</p>
+        </div>
+
+        <h5 class="fw-bold text-primary mb-3">Appuntamenti confermati</h5>
+        <div id="lista-appuntamenti-confermati" class="d-flex overflow-x-auto pb-3 mb-4" style="white-space: nowrap;">
+            <p class="text-muted">Caricamento agenda...</p>
+        </div>
+    </div>
+
+    <!-- SEZIONE 2: Esclusiva per ARCHITETTI, NOTAI, ARREDATORI -->
+    <div id="sezione-consulenze-professionista" class="d-none">
+        <h5 class="fw-bold text-primary mb-3 mt-4">Richieste di consulenza ricevute</h5>
+        <div id="lista-richieste-consulenze" class="d-flex overflow-x-auto pb-3 mb-4" style="white-space: nowrap;">
+            <p class="text-muted">Caricamento richieste...</p>
+        </div>
+
+        <h5 class="fw-bold text-primary mb-3">Consulenze confermate</h5>
+        <div id="lista-consulenze-confermate" class="d-flex overflow-x-auto pb-3 mb-4" style="white-space: nowrap;">
+            <p class="text-muted">Caricamento agenda...</p>
+        </div>
+    </div>
+<!-- Contenitore Calendario Mensile -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+            <button class="btn btn-outline-primary btn-sm fw-bold" onclick="cambiaMese(-1)">&lt; Precedente</button>
+            <h4 class="mb-0 fw-bold text-primary" id="mese-corrente-label">Caricamento...</h4>
+            <button class="btn btn-outline-primary btn-sm fw-bold" onclick="cambiaMese(1)">Successivo &gt;</button>
+        </div>
+        <div class="card-body p-0">
+            <div class="d-flex bg-light text-center fw-bold border-bottom text-muted">
+                <div class="flex-fill py-2">Lun</div><div class="flex-fill py-2">Mar</div>
+                <div class="flex-fill py-2">Mer</div><div class="flex-fill py-2">Gio</div>
+                <div class="flex-fill py-2">Ven</div><div class="flex-fill py-2">Sab</div>
+                <div class="flex-fill py-2">Dom</div>
+            </div>
+            <div id="calendario-grid" class="text-center">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Dettaglio Appuntamenti del Giorno -->
+    <div class="modal fade" id="modalDettaglioGiorno" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold">Appuntamenti del <span id="giorno-selezionato-label"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="lista-appuntamenti-giorno">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modaleConsulenza" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Richiedi una Consulenza</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Figura professionale</label>
+                        <select class="form-select" id="tipoProfConsulenza" onchange="caricaProfessionistiOnline()">
+                            <option value="">Seleziona...</option>
+                            <option value="Architetto">Architetto</option>
+                            <option value="Notaio">Notaio</option>
+                            <option value="Arredatore">Arredatore d'interni</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Professionista</label>
+                        <select class="form-select" id="profSelezionatoConsulenza" disabled>
+                            <option value="">Prima scegli la figura</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-secondary mt-4 border-bottom pb-2">Dettagli Immobile</h6>
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label class="form-label small">Indirizzo</label>
+                        <input type="text" class="form-control" id="cons_indirizzo" placeholder="Via Roma, 10">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">Città</label>
+                        <input type="text" class="form-control" id="cons_citta" placeholder="Napoli">
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label small">Metri Quadri (MQ)</label>
+                        <input type="number" class="form-control" id="cons_mq">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">Stanze</label>
+                        <input type="number" class="form-control" id="cons_stanze">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">Tipo Immobile</label>
+                        <select class="form-select" id="cons_tipo_immobile">
+                            <option value="Appartamento">Appartamento</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Ufficio">Ufficio</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-secondary mt-4 border-bottom pb-2">Appuntamento</h6>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Data e ora (Videochiamata)</label>
+                    <input type="datetime-local" class="form-control" id="dataConsulenza">
+                </div>
+
+                <div id="consulenza-error" class="alert alert-danger d-none small"></div>
+                <div id="consulenza-success" class="alert alert-success d-none small"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" onclick="inviaRichiestaConsulenza()">Invia Richiesta</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<style>
+    .row.flex-nowrap { overflow-x: auto; }
+
+    .dashboard-card {
+        min-width: 350px;
+        max-width: 350px;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        background: white;
+    }
+    .card-img-left {
+        width: 120px;
+        height: 100%;
+        object-fit: cover;
+    }
+    .card-status-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+    }
+
+    #calendario-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .cal-day { min-height: 90px; border-bottom: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; padding: 8px; position: relative; }
+    .cal-day:nth-child(7n) { border-right: none; }
+    .cal-badge { cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .cal-badge:hover { transform: scale(1.15); }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        caricaDashboardCompleta();
+    });
+</script>
+
+{% endblock %}

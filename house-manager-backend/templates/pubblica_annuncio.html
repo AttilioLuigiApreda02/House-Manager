@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white p-4">
+                    <h3 class="mb-0 fw-bold"><i class="fas fa-plus-circle me-2"></i>Pubblica Nuovo Annuncio</h3>
+                </div>
+                <div class="card-body p-5">
+
+                    <form id="form-pubblica" onsubmit="gestisciPubblicazione(event)">
+
+                        <h5 class="text-primary border-bottom pb-2 mb-4">Informazioni Principali</h5>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Titolo</label>
+                            <input type="text" class="form-control" id="pub-titolo" required>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Prezzo (€)</label>
+                                <input type="number" class="form-control" id="pub-prezzo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Tipologia</label>
+                                <select class="form-select" id="pub-tipo">
+                                    <option value="Vendita">Vendita</option>
+                                    <option value="Affitto">Affitto</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Tipo Immobile</label>
+                            <select class="form-select" id="pub-tipo-immobile">
+                                <option value="Appartamento">Appartamento</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Monolocale">Monolocale</option>
+                                <option value="Loft">Loft</option>
+                                <option value="Ufficio">Ufficio</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label class="form-label fw-bold">Descrizione Annuncio</label>
+                            <textarea class="form-control" id="pub-descrizione" rows="4" placeholder="Descrivi la casa: zona, luminosità, vicinanza ai servizi..."></textarea>
+                        </div>
+
+                        <h5 class="text-primary border-bottom pb-2 mb-4 mt-5">Dettagli Immobile</h5>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Città</label>
+                                <input type="text" class="form-control" id="pub-citta" required>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Via/Piazza</label>
+                                <input type="text" class="form-control" id="pub-indirizzo">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Civico</label>
+                                <input type="text" class="form-control" id="pub-civico"> </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Metri Quadri</label>
+                                <input type="number" class="form-control" id="pub-mq" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Stanze</label>
+                                <input type="number" class="form-control" id="pub-stanze" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Posti Auto</label>
+                                <input type="number" class="form-control" id="pub-posti-auto" value="0">
+                            </div>
+                        </div>
+
+                        <div class="mb-4 mt-4 bg-light p-3 rounded">
+                            <label class="form-label fw-bold mb-3 d-block">Caratteristiche Extra</label>
+                            <div class="d-flex flex-wrap gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pub-garage">
+                                    <label class="form-check-label" for="pub-garage">Garage</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pub-balcone">
+                                    <label class="form-check-label" for="pub-balcone">Balcone</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pub-ascensore">
+                                    <label class="form-check-label" for="pub-ascensore">Ascensore</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pub-arredato">
+                                    <label class="form-check-label" for="pub-arredato">Arredato</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pub-clima">
+                                    <label class="form-check-label" for="pub-clima">Climatizzazione</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pub-giardino">
+                                    <label class="form-check-label" for="pub-clima">Giardino</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="text-primary border-bottom pb-2 mb-4 mt-5">Foto</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Carica Immagini (Max 5)</label>
+                            <input type="file" class="form-control" id="pub-foto" multiple accept="image/*">
+                            <div class="form-text">Formati supportati: JPG, PNG, WEBP.</div>
+                        </div>
+
+                        <div class="d-grid mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold py-3">Pubblica Annuncio</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if (!localStorage.getItem('token')) {
+        alert("Devi effettuare il login per pubblicare un annuncio!");
+        window.location.href = "/";
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-white d-flex align-items-center"
+     style="background: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover; height: 93vh; position: relative;">
+
+    <div class="overlay" style="background: rgba(0,0,0,0.5); position: absolute; top:0; left:0; width:100%; height:100%;">
+
+    </div>
+
+    <div class="container position-relative z-index-1 text-center">
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename='img/Logo_con_testo.svg') }}" 
+                alt="House Manager" 
+                style="height: 250px; width: auto; filter: brightness(0) invert(1);">
+        </div>
+        <div class="bg-white p-4 rounded shadow-lg mx-auto" style="max-width: 900px;">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-7">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                        <input type="text" class="form-control border-start-0" id="search-text" placeholder="Inserisci un comune o una zona...">
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 d-grid">
+                    <button class="btn btn-secondary btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#pannelloFiltri">
+                        <i class="fas fa-sliders-h"></i> Filtri
+                    </button>
+                </div>
+                <div class="col-6 col-md-3 d-grid">
+                    <button class="btn btn-primary btn-lg" id="btn-cerca" type="button">
+                        Cerca
+                    </button>
+                </div>
+            </div>
+
+            <div class="collapse mt-3 text-start text-dark" id="pannelloFiltri">
+                <hr>
+                <div class="row g-3">
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small">Tipologia</label>
+                        <select class="form-select" id="filtro-tipo">
+                            <option value="">Tutte</option>
+                            <option value="Appartamento">Appartamento</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Monolocale">Monolocale</option>
+                            <option value="Loft">Loft</option>
+                            <option value="Ufficio">Ufficio</option>
+                            <option value="Rustico">Rustico</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small">Prezzo Max</label>
+                        <input type="number" class="form-control" id="filtro-prezzo" placeholder="Es: 250000">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold small">Stanze (min)</label>
+                        <input type="number" class="form-control" id="filtro-stanze">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold small">Mq (min)</label>
+                        <input type="number" class="form-control" id="filtro-mq">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold small">Bagni (min)</label>
+                        <input type="number" class="form-control" id="filtro-bagni">
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="check-garage">
+                                <label class="form-check-label small" for="check-garage">Garage</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="check-balcone">
+                                <label class="form-check-label small" for="check-balcone">Balcone</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="check-ascensore">
+                                <label class="form-check-label small" for="check-ascensore">Ascensore</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="check-giardino">
+                                <label class="form-check-label small" for="check-giardino">Giardino</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="check-arredato">
+                                <label class="form-check-label small" for="check-arredato">Arredato</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-end">
+                        <button class="btn btn-primary btn-sm fw-bold px-4" onclick="cercaAnnunci()">Applica Filtri</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#annunci-container" class="scroll-arrow text-white">
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+</div>
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-secondary" id="titolo-lista">Annunci Più recenti</h2>
+        <button class="btn btn-primary" onclick="window.location.href='/pubblica'">Pubblica annuncio</button>
+    </div>
+
+    <div class="row g-4" id="annunci-container">
+        <div class="text-center">
+
+        </div>
+    </div>
+</div>
+
+<style>
+.scroll-arrow {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5rem; 
+    z-index: 10;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    animation: bounce 2s infinite;
+}
+
+.scroll-arrow:hover {
+    opacity: 1;
+    color: #f8f9fa !important;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translate(-50%, 0);
+    }
+    40% {
+        transform: translate(-50%, -15px);
+    }
+    60% {
+        transform: translate(-50%, -7px);
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+</style>
+
+{% endblock %}

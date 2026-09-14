@@ -1,0 +1,108 @@
+:root {
+    --primary-color: #1a5c96; /* Blu scuro */
+    --secondary-color: #6c757d; /* Grigio */
+}
+
+.bg-primary, .btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    color: white;
+}
+
+.search-box-container {
+    max-width: 700px;
+    width: 100%;
+    opacity: 0.95;
+}
+
+
+.card-annuncio {
+    transition: transform 0.3s;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-annuncio:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+.badge-stato {
+    position: absolute;
+    top: 20px;
+    right: -30px;
+    background: #6c757d;
+    color: white;
+    padding: 5px 30px;
+    transform: rotate(45deg);
+    font-size: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.thumb-img {
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    border: 2px solid transparent;
+}
+.thumb-img:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+.thumb-img.active {
+    border-color: #0d6efd;
+}
+
+.ribbon-wrapper {
+    width: 85px;
+    height: 88px;
+    overflow: hidden;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    z-index: 10;
+}
+.ribbon {
+    font: bold 15px Sans-Serif;
+    color: #fff;
+    text-align: center;
+    transform: rotate(45deg);
+    position: relative;
+    padding: 7px 0;
+    left: -5px;
+    top: 15px;
+    width: 120px;
+    background-color: #6c757d;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+}
+
+.ribbon.attivo { background-color: #198754; }
+.ribbon.venduto { background-color: #dc3545; }G
+.ribbon.trattativa { background-color: #ffc107; color: #000; }
+
+#lista-appuntamenti::-webkit-scrollbar {
+    height: 8px;
+}
+#lista-appuntamenti::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+.card-appuntamento {
+    min-width: 250px;
+    scroll-snap-align: start;
+}
