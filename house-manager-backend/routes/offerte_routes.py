@@ -48,8 +48,8 @@ def notifica_nuova_offerta_async(destinatario, importo, titolo_annuncio, link_da
     Thread(target=email_nuova_offerta, args=(destinatario, importo, titolo_annuncio, link_dashboard)).start()
 
 def invia_mail_notifica(destinatario, stato_offerta):
-    mittente = "attilioluigi2002@gmail.com"
-    password_app = "uair pzou zyie hasb"
+    mittente = os.getenv('EMAIL_UTENET')
+    password_app = os.getenv('EMAIL_PASSWORD')
     oggetto = f"Esito della tua offerta: {stato_offerta}"
     corpo = f"Ciao,\n\nTi informiamo che la tua offerta su House Manager è stata {stato_offerta}.\n\nCordiali saluti,\nIl team."
     msg = MIMEText(corpo)
